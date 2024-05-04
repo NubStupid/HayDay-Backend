@@ -10,8 +10,11 @@ app.use(cookieParser())
 app.use(require("body-parser").json())
 
 const farmRouter = require("./src/routes/farmRoutes")
-app.use('/api/v1/farm',farmRouter)
+const barnRouter = require("./src/routes/barnRoutes")
 
+
+app.use('/api/v1/farm',farmRouter)
+app.use("/api/v1/barn",barnRouter)
 
 
 app.get('/', (req, res) => res.send('Hello World!'))

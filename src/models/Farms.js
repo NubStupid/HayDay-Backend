@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       barn_id:{
         type:DataTypes.STRING(20),
-        allowNull:false
+        allowNull:true
       },
     },
     {
