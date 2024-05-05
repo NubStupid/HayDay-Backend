@@ -5,7 +5,7 @@ const verifyUser = (req,res,next) => {
         req.roles = "Farmer"
         req.user = {
             user_id: "USER202404051800001",
-            usermame: "TESTFARM"
+            username: "TESTFARM"
         }
         next()
     }else{
