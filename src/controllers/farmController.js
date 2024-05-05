@@ -39,9 +39,9 @@ const createFarm =  async (req,res) => {
         })
     }catch(error){
         return res.status(400).json({
-            ERR_CODE:"ERROR CREATING BARN",
+            ERR_CODE:"ERROR CREATING FARM",
             message:error.toString(),
-            path:"createBarn (controller)"
+            path:"createFarm (controller)"
         })
     }
 }
