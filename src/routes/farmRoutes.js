@@ -6,6 +6,8 @@ const {
      fetchFarm,
      deleteFarm,
      restoreFarm,
+     setBarn,
+     unsetBarn,
     } = require('../controllers/farmController');
 const middleware = require('../middlewares');
 const router = express.Router()
@@ -16,5 +18,8 @@ router.post("/create",[middleware.verifyToken,middleware.verifyUser,middleware.v
 router.put('/update',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm()],updateFarm)
 router.delete("/delete",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm()],deleteFarm)
 router.post("/restore",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm("all")],restoreFarm)
+router.patch("/set",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm("all"),middleware.verifyBarn("all")],setBarn)
+router.patch("/unset",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm("all"),middleware.verifyBarn("all")],unsetBarn)
+
 
 module.exports = router

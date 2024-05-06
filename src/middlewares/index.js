@@ -5,5 +5,7 @@ middleware.verifyToken = require("./verifyToken")
 middleware.verifyRole = require("./verifyRole")
 middleware.verifyPostCode = require("./verifyPostCode")
 middleware.verifyFarm = require("./verifyFarm")
+middleware.verifyBarn = require("./verifyBarn")
+middleware.verifyBalance = require("./verifyBalance")
 
 module.exports = middleware

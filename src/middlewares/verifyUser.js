@@ -5,10 +5,20 @@ const verifyUser = (req,res,next) => {
         req.roles = "Farmer"
         req.user = {
             user_id: "USER202404051800001",
-            username: "TESTFARM"
+            username: "TESTFARM",
+            balance: 1500
         }
         next()
-    }else{
+    }else if(token == "TESTADMIN"){
+        req.roles = "Admin"
+        req.user = {
+            user_id: "USER202404051800002",
+            username: "ADMINTEST",
+            balance: 1500
+        }
+        next()
+    }
+    else{
         return res.status(400).json({
             ERR_CODE:"INVALID_USER",
             message:"Test token invalid",

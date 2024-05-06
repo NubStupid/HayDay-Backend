@@ -161,11 +161,65 @@ const restoreFarm = async (req,res) =>{
     }
 }
 
+const setBarn = async (req,res) =>{
+    const barn = req.barn
+    const farm = req.farm
+    const validToSet = await Farms.findAll({where:{barn_id:barn.barn_id},paranoid:false})
+    if(validToSet.length > 0){
+        return res.status(400).json({
+            ERR_CODE:"INVALID BARN ID",
+            message:`This barn_id ${barn.barn_id} has already been used by another farm!`,
+            path:"setBarn (controller)"
+        })
+    }
+    await Farms.update({
+        barn_id:barn.barn_id
+    },{
+        where:{
+            farm_id:farm.farm_id
+        }
+    })
+    return res.status(200).json({
+        STATUS_CODE:`SUCCESSFULY ADDED ${barn.barn_id} INTO ${farm.farm_name}`,
+        farm_id: farm.farm_id,
+        farm_name: farm.farm_name,
+        user: req.user.username
+    })
+}
+
+const unsetBarn =  async (req,res) =>{
+    const barn = req.barn
+    const farm = req.farm
+    const validToSet = await Farms.findAll({where:{barn_id:barn.barn_id},paranoid:false})
+    if(validToSet.length == 0){
+        return res.status(400).json({
+            ERR_CODE:"INVALID BARN ID",
+            message:`This barn_id ${barn.barn_id} hasn't been used by another farm!`,
+            path:"unsetBarn (controller)"
+        })
+    }
+    await Farms.update({
+        barn_id:null
+    },{
+        where:{
+            farm_id:farm.farm_id
+        }
+    })
+    return res.status(200).json({
+        STATUS_CODE:`SUCCESSFULY REMOVED ${barn.barn_id} FROM ${farm.farm_name}`,
+        farm_id: farm.farm_id,
+        farm_name: farm.farm_name,
+        user: req.user.username
+    })
+}
+
 module.exports = {
     test,
     createFarm,
     updateFarm,
     fetchFarm,
     deleteFarm,
-    restoreFarm
+    restoreFarm,
+    setBarn,
+    unsetBarn
 }
