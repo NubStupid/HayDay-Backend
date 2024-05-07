@@ -7,5 +7,6 @@ middleware.verifyPostCode = require("./verifyPostCode")
 middleware.verifyFarm = require("./verifyFarm")
 middleware.verifyBarn = require("./verifyBarn")
 middleware.verifyBalance = require("./verifyBalance")
+middleware.verifyCrop = require("./verifyCrop")
 
 module.exports = middleware
