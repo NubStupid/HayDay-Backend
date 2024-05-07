@@ -1,10 +1,9 @@
 const express = require('express');
 const middleware = require('../middlewares');
-const { register } = require('../controllers/userController');
-const router = express.Router()
+const { register, login } = require('../controllers/userController');
+const app = express.Router()
 
-router.post('/', function (req, res) {
+app.post('/register', register)
 
-})
-
-module.exports = router
+app.post('/login', login)
+module.exports = app

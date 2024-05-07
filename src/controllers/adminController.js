@@ -1,6 +1,6 @@
-const createCrops = (req,res) =>{
-    
-}
+const createCrops = (req, res) => {};
+
+
 module.exports = {
     createCrops,
-}
+};
