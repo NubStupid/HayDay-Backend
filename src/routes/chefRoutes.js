@@ -1,10 +1,15 @@
 const express = require("express");
-const { create, update, del, get } = require("../controllers/chefController");
+const {
+    create,
+    update,
+    deleteFnB,
+    get,
+} = require("../controllers/chefController");
 const router = express.Router();
 
 router.post("/", create);
 router.put("/", update);
-router.delete("/", del);
+router.delete("/", deleteFnB);
 router.get("/", get);
 
 module.exports = router;
