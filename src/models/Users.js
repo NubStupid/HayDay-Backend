@@ -36,6 +36,9 @@ module.exports = (sequelize, DataTypes) => {
             role: {
                 type: DataTypes.STRING(20),
             },
+            status: {
+                type: DataTypes.STRING(10),
+            },
             access_token: {
                 type: DataTypes.STRING(255),
             },

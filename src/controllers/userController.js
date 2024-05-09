@@ -132,23 +132,16 @@ const login = async (req, res) => {
     );
 
     res.status(200).send({
-        message: "Anda login sebagai " + user.email,
+        message: "Anda login sebagai " + user.display_name,
         token: access_token,
     });
 };
 
 const topup = async (req, res) => {
-    const username = req.username
-    const { balance } = req.body
-
-    if(balance > 0){
-        let user = await Users.findOne({
-            where: {
-                username: username
-            }
-        })
-    
-        let updatedBalance = parseInt(user.balance) + parseInt(balance)
+    const {username, balance} = req.user
+    const { topup } = req.body
+    if(topup > 0){
+        let updatedBalance = parseInt(balance) + parseInt(topup)
     
         await Users.update(
             {balance: updatedBalance}, 
@@ -159,7 +152,7 @@ const topup = async (req, res) => {
     
         res.status(200).send({
             message: 'Berhasil topup saldo!',
-            saldo_anda: updatedBalance
+            saldo: updatedBalance
         })
     }
     else{
@@ -167,8 +160,35 @@ const topup = async (req, res) => {
     }
 }
 
+const role = async (req, res) => {
+    const {user_id} = req.user
+    const {role} = req.body
+
+    let user = await Users.findOne({
+        where : {
+            user_id : user_id
+        }
+    })
+
+    if(!role) return res.status(400).send({message: 'Role harus diisi!'})
+    if(role == 'Distributor' || role == 'Farmer' || role == 'Chef'){
+        await Users.update(
+            {role: role, status: 'Pending'},
+            {where: {
+                user_id : user_id
+            }}
+        )
+    
+        res.status(200).send({message: 'Permintaan untuk menjadi ' + role + ' telah diajukan. Harap menunggu'})
+    }
+    else{
+        res.status(400).send({message: 'Role hanya bisa diisi dengan Distributor/Farmer/Chef'})
+    }
+}
+
 module.exports = {
     register,
     login,
-    topup
+    topup,
+    role
 };
