@@ -6,7 +6,8 @@ const verifyToken = (req, res, next) =>{
             message:"Request forbidden!",
             path:"verifyToken (middleware)"
         })
-    }else{
+    }
+    else{
         next()  
     }
 }
