@@ -11,11 +11,15 @@ module.exports = (sequelize, DataTypes) => {
                 primaryKey: true,
             },
             fnb_name: {
-                type: DataTypes.STRING(50),
+                type: DataTypes.STRING(100),
                 allowNull: false,
             },
             description: {
                 type: DataTypes.STRING(255),
+                allowNull: false,
+            },
+            type: {
+                type: DataTypes.STRING(10),
                 allowNull: false,
             },
             price: {
