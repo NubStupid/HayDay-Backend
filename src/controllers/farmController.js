@@ -121,7 +121,7 @@ const deleteFarm = async (req,res) =>{
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY DELETED A FARM",
             username:req.user.username,
-            farm_deleted:farmToDelete.farm_id
+            farm_deleted:farmToDelete
         })
     }catch(error){
         return res.status(400).json({
@@ -150,7 +150,7 @@ const restoreFarm = async (req,res) =>{
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY RESTORED A FARM",
             username:req.user.username,
-            farm_deleted:farmToRestore.farm_id
+            farm_restored:farmToRestore
         })
     }catch(error){
         return res.status(400).json({

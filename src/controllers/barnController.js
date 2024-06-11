@@ -82,7 +82,7 @@ const deleteBarn = async (req,res) =>{
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY DELETED A BARN",
             username:req.user.username,
-            barn_deleted:barnToDelete.barn_id
+            barn_deleted:barnToDelete
         })
     }catch(error){
         return res.status(400).json({
@@ -111,7 +111,7 @@ const restoreBarn = async (req,res) =>{
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY RESTORED A BARN",
             username:req.user.username,
-            barn_restored:barnToRestore.barn_id
+            barn_restored:barnToRestore
         })
     }catch(error){
         return res.status(400).json({
