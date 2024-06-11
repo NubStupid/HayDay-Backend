@@ -1,4 +1,4 @@
-const verifyToken = (req,res,next) =>{
+const verifyToken = (req, res, next) =>{
     const token = req.header('x-auth-token')
     if(!token){
         return res.status(403).json({
@@ -6,7 +6,8 @@ const verifyToken = (req,res,next) =>{
             message:"Request forbidden!",
             path:"verifyToken (middleware)"
         })
-    }else{
+    }
+    else{
         next()  
     }
 }
