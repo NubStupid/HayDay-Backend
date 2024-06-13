@@ -21,7 +21,7 @@ const deleteSellerItem = async (req, res) => {
         });
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY DELETED A ITEM",
-            // username: req.user.username,
+            username: req.user.username,
             item_deleted: item.item_id,
         });
     } catch (error) {
@@ -38,7 +38,7 @@ const getItem = async (req, res) => {
         const item = req.item;
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY FIND A ITEM",
-            // username: req.user.username,
+            username: req.user.username,
             item,
         });
     } catch (error) {

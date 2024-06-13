@@ -25,7 +25,7 @@ const createMenu = async (req, res) => {
             new_menu:{
                 createFnB
             },
-            // user:req.user.username,
+            user:req.user.username,
             createdAt: getTime(createFnB.createdAt)
         })
     }catch(error){
@@ -71,7 +71,7 @@ const updateMenu = async (req, res) => {
         fnb = await FnB.findAll({where:{fnb_id: fnb.fnb_id}})
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY UPDATED A MENU",
-            // username: req.user.username,
+            username: req.user.username,
             fnb_updated: fnb,
         });
     } catch (error) {
@@ -93,7 +93,7 @@ const deleteMenu = async (req, res) => {
         });
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY DELETED A MENU",
-            // username: req.user.username,
+            username: req.user.username,
             fnb_deleted: fnb.fnb_id,
         });
     } catch (error) {
@@ -146,13 +146,9 @@ const getMenus = async (req, res) => {
         if(!name)
             fnb = await FnB.findAll()
 
-        // ,
-        // attributes:["fnb_id","fnb_name","barn_id","createdAt","updatedAt"]    
-    //     }
-    // );
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY FIND MENU",
-            // username: req.user.username,
+            username: req.user.username,
             menu: fnb,
         });
     } catch (error) {
