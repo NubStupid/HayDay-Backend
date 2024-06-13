@@ -19,10 +19,10 @@ const verifyUser = async (req, res, next) => {
             username: userdata.username,
         },
     });
-    if (user.role == "Distributor") req.role = "Distributor";
-    else if (user.role == "Farmer") req.role = "Farmer";
-    else if (user.role == "Chef") req.role = "Chef";
-    else if (user.role == "Seller") req.role = "Seller";
+    if (user.role == "Distributor") req.roles = "Distributor";
+    else if (user.role == "Farmer") req.roles = "Farmer";
+    else if (user.role == "Chef") req.roles = "Chef";
+    else if (user.role == "Seller") req.roles = "Seller";
     else req.roles = null;
     req.user = {
         user_id: user.user_id,
