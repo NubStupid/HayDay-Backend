@@ -16,6 +16,7 @@ const FarmShopCrops = require("./FarmShopCrops");
 const Tiles = require("./Tiles");
 const Users = require("./Users");
 const FnB = require("./FnB");
+const SellerItem = require("./SellerItem");
 
 // Init Model
 db.Barns = Barns(conn, DataTypes);
@@ -27,5 +28,6 @@ db.FarmShopCrops = FarmShopCrops(conn, DataTypes);
 db.Tiles = Tiles(conn, DataTypes);
 db.Users = Users(conn, DataTypes);
 db.FnB = FnB(conn, DataTypes);
+db.SellerItem = SellerItem(conn, DataTypes);
 
 module.exports = db;

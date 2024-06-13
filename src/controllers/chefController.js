@@ -110,7 +110,7 @@ const getMenu = async (req, res) => {
         const fnb = req.fnb;
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY FIND A MENU",
-            // username: req.user.username,
+            username: req.user.username,
             menu: fnb,
         });
     } catch (error) {

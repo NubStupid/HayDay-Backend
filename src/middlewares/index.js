@@ -9,5 +9,6 @@ middleware.verifyBarn = require("./verifyBarn")
 middleware.verifyBalance = require("./verifyBalance")
 middleware.verifyCrop = require("./verifyCrop")
 middleware.verifyFnB = require("./verifyFnB")
+middleware.verifySellerItem = require("./verifySellerItem")
 
 module.exports = middleware
