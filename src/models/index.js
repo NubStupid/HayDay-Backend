@@ -5,6 +5,7 @@
  */
 
 const db = {};
+const dbmongoose = {};
 const { DataTypes } = require("sequelize");
 const conn = require("../databases/connectionHayDay");
 const Barns = require("./Barns");
@@ -17,6 +18,10 @@ const Users = require("./Users");
 const FnB = require("./FnB");
 const SellerItem = require("./SellerItem");
 
+// Mongoose
+const RequestFarmerSchema= require("./RequestFarmerSchema");
+const RequestSellerSchema= require("./RequestSellerSchema");
+
 // Init Model
 db.Barns = Barns(conn, DataTypes);
 db.BarnCrops = BarnCrops(conn, DataTypes);
@@ -28,4 +33,10 @@ db.Users = Users(conn, DataTypes);
 db.FnB = FnB(conn, DataTypes);
 db.SellerItem = SellerItem(conn, DataTypes);
 
+db.RequestFarmer = RequestFarmerSchema;
+db.RequestSeller = RequestSellerSchema;
+
+// module.exports = {
+    // db
+// };
 module.exports = db;
