@@ -14,12 +14,23 @@ const verifyRequestSeller = (type) =>{
         }
         const validReq = await db.RequestSeller.findById(req_id)
         if(validReq){
-            req.request = validReq
-            next()
+            if(validReq.status != "Accepted")
+            {
+                req.request = validReq
+                next()
+            }
+            else
+            {
+                return res.status(400).json({
+                    ERR_CODE:"UNABLE EDIT REQUEST",
+                    message:"Request with ID: "+ req.body.req_id +" is already accepted by Distributor and can't be edited!",
+                    path:"verifyRequestSeller (middlware)"
+                })
+            }
         }else{
             return res.status(400).json({
                 ERR_CODE:"INVALID REQ_ID",
-                message:"Item with ID: "+ req.body.req_id +" is either deleted or cannot be found!",
+                message:"Request with ID: "+ req.body.req_id +" is either deleted or cannot be found!",
                 path:"verifyRequestSeller (middlware)"
             })
         }

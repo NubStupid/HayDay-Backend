@@ -7,7 +7,7 @@ const reqSellerSchema = mongoose.Schema({
     item_id: String,
     item_name: String,
     price: Number,
-    quantity: Number,
+    qty: Number,
     total_price: Number,
     status: String,
     comment: String
