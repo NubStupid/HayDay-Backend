@@ -26,6 +26,10 @@ module.exports = (sequelize, DataTypes) => {
         type:DataTypes.STRING(255),
         allowNull:false,
     },
+    due_date:{
+        type:DataTypes.DATE(),
+        allowNull:false
+    }
     },
     {
       sequelize,
