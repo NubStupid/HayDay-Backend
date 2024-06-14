@@ -7,7 +7,12 @@ const getTime = require("../utils/functions/getTime")
 const createCrops = async (req,res) =>{
     try{
         const {crop_name,crop_species,harvest_result,harvest_time} = req.body
-        await schema.createCropSchema.validateAsync(req.body,{abortEarly:false})
+        await schema.createCropSchema.validateAsync({
+            crop_name:crop_name,
+            crop_species:crop_species,
+            harvest_result:harvest_result,
+            harvest_time:harvest_time
+        },{abortEarly:false})
         const time = getTimeID()
         const count = await Crops.count({where:{
             crop_id:{
@@ -15,12 +20,16 @@ const createCrops = async (req,res) =>{
             }
         }})+1
         const newID = "CROP"+time+(count.toString()).padStart(4,"0")
+        if(req.url == "/crop/create"){
+            req.url = "notFound.png"
+        }
         const newCrop = await Crops.create({
             crop_id:newID,
             crop_name:crop_name,
             crop_species:crop_species,
             harvest_result:harvest_result,
-            harvest_time:harvest_time
+            harvest_time:harvest_time,
+            image:`uploads/crop/${req.url}`
         })
         return res.status(201).json({
             STATUS_CODE:"SUCCESSFULY CREATED A CROP",
@@ -29,7 +38,8 @@ const createCrops = async (req,res) =>{
                 crop_name: newCrop.crop_name,
                 crop_species:newCrop.crop_species,
                 harvest_result:newCrop.harvest_result,
-                harvest_time:newCrop.harvest_time
+                harvest_time:newCrop.harvest_time,
+                image_path:newCrop.image
             },
             createdAt:getTime(newCrop.createdAt),
             user: req.user.username
@@ -169,6 +179,11 @@ const fetchCrops = async (req,res) =>{
     }
 }
 
+const fetchCropImage = async(req,res) => {
+    return res.sendFile(req.crop.image,{root:"."})
+}
+
+
 const getUsers = async (req, res) => {
     let users = await Users.findAll({
         attributes: ['user_id', 'username', 'display_name', 'email', 'phone_number', 'balance', 'role', 'status']
@@ -216,6 +231,7 @@ module.exports = {
     deleteCrops,
     restoreCrops,
     fetchCrops,
+    fetchCropImage,
     getUsers,
     setRole
 }
