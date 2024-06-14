@@ -321,6 +321,41 @@ const restoreTile =async (req,res) => {
         })
     }
 }
+
+const fetchTile = async(req,res) =>{
+    const user = req.user
+    let allTiles = await Tiles.findAll({where:{
+        user_id: user.user_id,
+    },
+    attributes:["tile_id","farm_id","user_id","crop_id","createdAt","updatedAt"]
+    })
+    let allTilesFormatted = []
+    allTiles.map((f)=>{
+        allTilesFormatted.push({
+            tile_id:f.tile_id,
+            farm_id:f.farm_id,
+            user_id:f.user_id,
+            crop_id: f.crop_id,
+            createdAt: getTime(f.createdAt),
+            lastUpdated: getTime(f.updatedAt),
+        })
+    })
+    return res.status(200).json({
+        STATUS_CODE: "SUCCESSFULLY FETCH ALL "+user.username+"'s Farms",
+        farms:allFarmsFormatted,
+    })
+}
+
+const farmAllTiles = async (req,res) =>{
+    const allTiles = await Tiles.findAll()
+    let allTilesFormatted = []
+    allTilesFormatted.map((t) => {
+        due_day = t.due_date.getDay()
+        due_month = t.due_date.getMonth()+1
+        due_year = t.due_date.getFullYear()
+    })
+}
+
 module.exports = {
     test,
     createFarm,
@@ -334,5 +369,7 @@ module.exports = {
     updateTile,
     deleteTile,
     restoreTile,
-    
+    fetchTile,
+    farmAllTiles,
+
 }
