@@ -33,6 +33,40 @@ app.use("/api/v1/user",[AuditLog], userRouter);
 
 
 app.get("/", (req, res) => res.send("Hello World!"));
-mongoose.connect("mongodb://127.0.0.1/db_vct").then(function () {
+mongoose.connect("mongodb://127.0.0.1/hayday_backend").then(function () {
     app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 });
+
+const reqFarmerSchema = mongoose.Schema({
+    _id: String,
+    customer_id: String,
+    distributor_id: String,
+    item_id: String,
+    item_name: String,
+    price: Number,
+    quantity: Number,
+    total_price: Number,
+    status: String,
+    comment: String
+});
+
+const reqSellerSchema = mongoose.Schema({
+    _id: String,
+    customer_id: String,
+    distributor_id: String,
+    item_id: String,
+    item_name: String,
+    price: Number,
+    quantity: Number,
+    total_price: Number,
+    status: String,
+    comment: String
+});
+
+const reqFarmer = mongoose.model("reqFarmer", reqFarmerSchema, "request_farmer");
+const reqSeller = mongoose.model("reqSeller", reqSellerSchema, "request_seller");
+
+console.log(reqSeller);
+
+// module.exports = { reqFarmer, reqSeller }
+module.exports = { reqFarmer: mongoose.model("reqFarmer", reqFarmerSchema, "request_farmer"), reqSeller: mongoose.model("reqSeller", reqSellerSchema, "request_seller") }

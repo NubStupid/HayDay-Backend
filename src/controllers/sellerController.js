@@ -1,13 +1,59 @@
 const { Op } = require("sequelize")
 const { SellerItem } = require("../models")
+const { reqSeller } = require("../../index")
 const schema = require("../utils/validation")
 const getTime = require("../utils/functions/getTime")
 
-const buy = async (req, res) => {
-    return res.status(200).json({ message: "Buy Item" });
+const buyItem = async (req, res) => {
+    console.log(SellerItem);
+    console.log(reqSeller);
+    let { distributor_id, items, price, qty } = req.body
+    for(let i = 0; i < items.length; i++)
+    {
+        item_id = items[i]
+        let jum = await reqSeller.find()
+        console.log(jum);
+        // await .create({
+        //     _id:user_id,
+        //     nama,
+        //     password,
+        //     email
+        // })
+        let itm_id = "ITM" + (jum.length + 1).toString().padStart(3, "0");
+        // await User.create({
+        //     _id:user_id,
+        //     nama,
+        //     password,
+        //     email
+        // })
+    }
+    return res.json({body: req.body, item_id})
+    // try {
+    //     const item = req.item;
+    //     await SellerItem.destroy({
+    //         where: {
+    //             item_id: item.item_id,
+    //         },
+    //     });
+    //     return res.status(200).json({
+    //         STATUS_CODE: "SUCCESFULLY REQUEST ITEM",
+    //         username: req.user.username,
+    //         item_requested: item.item_id,
+    //     });
+    // } catch (error) {
+    //     return res.status(400).json({
+    //         ERR_CODE: "ERROR DELETING ITEM",
+    //         message: error.toString(),
+    //         path: "buyItem (sellerController)",
+    //     });
+    // }
 };
 
-const update = async (req, res) => {
+const editRequest = async (req, res) => {
+    return res.status(200).json({ message: "Edit Item" });
+};
+
+const updateItem = async (req, res) => {
     return res.status(200).json({ message: "Update Item" });
 };
 
@@ -93,8 +139,9 @@ const getItems = async (req, res) => {
 };
 
 module.exports = {
-    buy,
-    update,
+    buyItem,
+    editRequest,
+    updateItem,
     deleteSellerItem,
     getItem,
     getItems,
