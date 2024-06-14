@@ -4,10 +4,10 @@ const { createCrops, getUsers, setRole } = require('../controllers/adminControll
 
 const app = express.Router()
 
-app.post("/crop/create", [middleware.verifyToken, middleware.verifyUser, middleware.verifyRole("Admin")], createCrops)
+app.post("/crop/create", [middleware.verifyToken, middleware.verifyAdmin], createCrops)
 
 app.get('/users', getUsers)
 
-app.put('/users/role', [middleware.verifyToken, middleware.verifyUser], setRole)
+app.put('/users/role', [middleware.verifyToken, middleware.verifyAdmin], setRole)
 
 module.exports = app

@@ -2,7 +2,7 @@ const JWT_KEY = "HAYDAY";
 const { Users } = require("../models");
 const jwt = require("jsonwebtoken");
 
-const verifyUser = async (req, res, next) => {
+const verifyAdmin = async (req, res, next) => {
     // TO DO: Ganti pakai validasi menggunakan model
     const token = req.header("x-auth-token");
     let userdata;
@@ -12,7 +12,7 @@ const verifyUser = async (req, res, next) => {
         return res.status(400).json({
             ERR_CODE: "INVALID_USER",
             message: "Test token invalid",
-            path: "verifyUser (Middleware)",
+            path: "verifyAdmin (Middleware)",
         });
     }
     let user = await Users.findOne({
@@ -20,17 +20,21 @@ const verifyUser = async (req, res, next) => {
             username: userdata.username,
         },
     });
-    if (user.role == "Distributor") req.role = "Distributor";
-    else if (user.role == "Farmer") req.role = "Farmer";
-    else if (user.role == "Chef") req.role = "Chef";
-    else if (user.role == "Admin") req.role = "Admin";
-    else req.roles = 'None';
-    req.user = {
-        user_id: user.user_id,
-        username: user.username,
-        balance: parseInt(user.balance),
-    };
-    next();
+    if (user.role == "Admin"){
+        req.role = "Admin";
+        req.user = {
+            user_id: user.user_id,
+            username: user.username,
+            balance: parseInt(user.balance),
+        };
+        next();
+    }
+    else {
+        return res.status(403).json({
+            ERR_CODE: "FORBIDDEN",
+            message: "You are not an administrator"
+        })
+    }
 };
 
-module.exports = verifyUser;
+module.exports = verifyAdmin;

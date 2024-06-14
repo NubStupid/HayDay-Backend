@@ -30,6 +30,9 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(15),
                 allowNull: false,
             },
+            city_id: {
+                type: DataTypes.INTEGER,
+            },
             balance: {
                 type: DataTypes.INTEGER,
             },

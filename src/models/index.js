@@ -9,6 +9,7 @@ const { DataTypes } = require("sequelize");
 const conn = require("../databases/connectionHayDay");
 const Barns = require("./Barns");
 const BarnCrops = require("./BarnCrops");
+const City = require("./City");
 const Crops = require("./Crops");
 const Farms = require("./Farms");
 const FarmShops = require("./FarmShops");
@@ -19,6 +20,7 @@ const Users = require("./Users");
 // Init Model
 db.Barns = Barns(conn, DataTypes);
 db.BarnCrops = BarnCrops(conn, DataTypes);
+db.City = City(conn, DataTypes);
 db.Crops = Crops(conn, DataTypes);
 db.Farms = Farms(conn, DataTypes);
 db.FarmShops = FarmShops(conn, DataTypes);

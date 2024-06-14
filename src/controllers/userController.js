@@ -1,4 +1,4 @@
-const { Users } = require("../models");
+const { Users, City } = require("../models");
 const Joi = require("joi");
 const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
@@ -62,6 +62,8 @@ const register = async (req, res) => {
             email: email,
             phone_number: phone_number,
             balance: 0,
+            role: '-',
+            status: '-'
         });
         res.status(201).send({
             user_id: id,
@@ -70,7 +72,7 @@ const register = async (req, res) => {
             phone_number: phone_number,
         });
     } else {
-        res.status(400).send({ message: "User sudah terdaftar" });
+        res.status(400).send({ message: "Username sudah terdaftar" });
     }
 };
 
@@ -171,7 +173,7 @@ const role = async (req, res) => {
     })
 
     if(!role) return res.status(400).send({message: 'Role harus diisi!'})
-    if(role == 'Distributor' || role == 'Farmer' || role == 'Chef'){
+    if(role == 'Farmer' || role == 'Chef'){
         await Users.update(
             {role: role, status: 'Pending'},
             {where: {
@@ -180,6 +182,39 @@ const role = async (req, res) => {
         )
     
         res.status(200).send({message: 'Permintaan untuk menjadi ' + role + ' telah diajukan. Harap menunggu'})
+    }
+    else if(role == 'Distributor'){
+        const {city} = req.body
+        if(!city) return res.status(400).send({message: 'Jika anda mendaftar sebagai distributor maka sertakan nama kota'})
+        let find = await City.findAll({
+            where: {
+                city_name: city
+            }
+        })
+        if(find.length != 0) {
+            let city = find[0]
+            await Users.update(
+                {city_id: city.city_id, role: role, status: 'Pending'},
+                {where: {
+                    user_id : user_id
+                }}
+            )
+
+            return res.status(200).send({message: 'Permintaan untuk menjadi ' + role + ' telah diajukan. Harap menunggu'})
+        }
+        else {
+            let all = await City.findAll({
+                where: {
+                    city_name: {
+                        [Op.like]: `%${city}%`
+                    }
+                }
+            });
+            res.status(404).send({
+                message: 'Kota tidak ditemukan',
+                rekomendasi: all
+            })
+        }
     }
     else{
         res.status(400).send({message: 'Role hanya bisa diisi dengan Distributor/Farmer/Chef'})

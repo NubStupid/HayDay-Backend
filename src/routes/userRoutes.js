@@ -6,7 +6,7 @@ const app = express.Router()
 app.post('/register', register)
 app.post('/login', login)
 app.put('/topup', [middleware.verifyToken, middleware.verifyUser], topup)
-app.put('/role', [middleware.verifyToken, middleware.verifyUser], role)
+app.put('/role', [middleware.verifyToken, middleware.verifyUser, middleware.verifyCity], role)
 
 
 module.exports = app
