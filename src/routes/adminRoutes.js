@@ -12,6 +12,6 @@ router.get("/crop/",[middleware.verifyToken,middleware.verifyUser,middleware.ver
 router.get('/crop/image',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Admin"),middleware.verifyCrop("all")],fetchCropImage)
 router.get('/users', getUsers)
 
-router.put('/users/role', [middleware.verifyToken, middleware.verifyUser], setRole)
+router.put('/users/role', [middleware.verifyToken, middleware.verifyAdmin], setRole)
 
 module.exports = router

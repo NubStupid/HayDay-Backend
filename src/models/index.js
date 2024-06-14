@@ -9,6 +9,7 @@ const dbmongoose = {};
 const { DataTypes } = require("sequelize");
 const conn = require("../databases/connectionHayDay");
 const Barns = require("./Barns");
+const City = require("./City");
 const Crops = require("./Crops");
 const Farms = require("./Farms");
 const FarmCrops = require("./FarmCrops");
@@ -23,6 +24,7 @@ const RequestSellerSchema= require("./RequestSellerSchema");
 
 // Init Model
 db.Barns = Barns(conn, DataTypes);
+db.City = City(conn, DataTypes);
 db.Crops = Crops(conn, DataTypes);
 db.Farms = Farms(conn, DataTypes);
 db.FarmCrops = FarmCrops(conn, DataTypes);
