@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     SellerItem.init(
         {
             item_id: {
-                type: DataTypes.STRING(6),
+                type: DataTypes.STRING(20),
                 primaryKey: true,
             },
             item_name: {

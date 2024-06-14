@@ -2,15 +2,28 @@ const { Op } = require("sequelize")
 const { FnB } = require("../models")
 const schema = require("../utils/validation")
 const getTime = require("../utils/functions/getTime")
+const getTimeID = require("../utils/functions/getTimeID");
 
 const createMenu = async (req, res) => {
     try{
         const { fnb_name, description, type, price } = req.body
-        await schema.createChefSchema.validateAsync(req.body, {
+
+        await schema.createChefSchema.createChefSchema.validateAsync(req.body, {
             abortEarly:false
         })
-        let fnb_id = await FnB.count({paranoid: false})
-        fnb_id = "FNB" + (fnb_id + 1).toString().padStart(3, "0")
+
+        let time = getTimeID();
+        let ctid = await FnB.count({
+            where: {
+                fnb_id: {
+                    [Op.like]: `%${time}%`,
+                },
+            },
+            paranoid: false
+        });
+
+        let fnb_id = "FNB" + time + (ctid + 1).toString().padStart(4, "0");
+
         const createFnB = await FnB.create({
             fnb_id,
             fnb_name,

@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) => {
     FnB.init(
         {
             fnb_id: {
-                type: DataTypes.STRING(6),
+                type: DataTypes.STRING(20),
                 primaryKey: true,
             },
             fnb_name: {

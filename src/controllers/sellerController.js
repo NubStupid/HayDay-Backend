@@ -1,14 +1,47 @@
 const axios = require("axios").default;
 const { Op } = require("sequelize")
-const { SellerItem, RequestSeller } = require("../models")
+const { SellerItem, RequestSeller, City, Users } = require("../models")
 const schema = require("../utils/validation")
-const getTime = require("../utils/functions/getTime")
+const getTimeID = require("../utils/functions/getTimeID");
 
 require("dotenv").config();
 
 const buyItem = async (req, res) => {
     try {
-        let { distributor_id, items, cekOngkir } = req.body
+        let { distributor, items, cekOngkir, kota_penerima } = req.body
+
+        let find = await City.findAll({
+            where: {
+                city_name: kota_penerima
+            }
+        })
+
+        let city
+        if(find.length != 0)
+            city = find[0]
+        else {
+            city = await City.findAll({
+                where: {
+                    city_name: {
+                        [Op.like]: `%${kota_penerima}%`
+                    }
+                }
+            });
+            return res.status(404).json({
+                ERR_CODE: "INVALID KOTA_PENERIMA",
+                path: "buyItem (sellerController)",
+                rekomendasi_kota: city,
+            });
+        }
+
+        distributor = await Users.findOne({
+            where: {
+                username: distributor,
+            },
+        });
+
+        if(!distributor || distributor.role != "Distributor" || distributor.status != "Approved")
+            throw new Error('Invalid distributor');
 
         const perintah = {
             method: "POST",
@@ -17,8 +50,8 @@ const buyItem = async (req, res) => {
                 key: process.env.RAJAONGKIR_API_KEY
             },
             data: {
-                origin: "501",
-                destination: "114",
+                origin: distributor.city_id,
+                destination: city.city_id,
                 weight: 1,
                 courier: "jne"
             }
@@ -31,15 +64,19 @@ const buyItem = async (req, res) => {
         for(let i = 0; i < items.length; i++)
         {
             item = items[i]
-            let jum = await RequestSeller.find()
-            let req_id = "REQ" + (jum.length + 1).toString().padStart(3, "0");
+            
+            let time = getTimeID();
+            let ctid = await RequestSeller.find({
+                _id: { $regex: '.*' + time + '.*' }
+            });
+            let req_id = "REQ" + time + (ctid.length + 1).toString().padStart(4, "0");
 
             if(!cekOngkir)
             {
                 await RequestSeller.create({
                     _id: req_id,
-                    seller_id: req.user.user_id,
-                    distributor_id,
+                    seller: req.user.username,
+                    distributor: distributor.username,
                     item_id: item.item_id,
                     price: item.price,
                     qty: item.qty,
@@ -48,27 +85,43 @@ const buyItem = async (req, res) => {
                     status: "Pending",
                     comment: ""
                 })
+                request.push({
+                    _id: req_id,
+                    distributor: distributor.username,
+                    item_id: item.item_id,
+                    price: "Rp " + Intl.NumberFormat(["ban", "id"]).format(item.price),
+                    qty: item.qty,
+                    ongkir: "Rp " + Intl.NumberFormat(["ban", "id"]).format(ongkir),
+                    total_price: "Rp " + Intl.NumberFormat(["ban", "id"]).format(item.price * item.qty + ongkir),
+                    status: "Pending"
+                })
             }
-            request.push({
-                _id: req_id,
-                distributor_id,
-                item_id: item.item_id,
-                price: "Rp " + Intl.NumberFormat(["ban", "id"]).format(item.price),
-                qty: item.qty,
-                ongkir,
-                total_price: "Rp " + Intl.NumberFormat(["ban", "id"]).format(item.price * item.qty + ongkir),
-                status: "Pending"
-            })
+            else
+            {
+                request.push({
+                    distributor: distributor.username,
+                    item_id: item.item_id,
+                    price: "Rp " + Intl.NumberFormat(["ban", "id"]).format(item.price),
+                    qty: item.qty,
+                    ongkir: "Rp " + Intl.NumberFormat(["ban", "id"]).format(ongkir),
+                    total_price: "Rp " + Intl.NumberFormat(["ban", "id"]).format(item.price * item.qty + ongkir),
+                })
+            }
         }
 
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY REQUEST ITEM",
             username: req.user.username,
-            pengiriman,
+            pengiriman: {
+                kota_pengirim: pengiriman.origin_details,
+                kota_penerima: pengiriman.destination_details, 
+                kurir: "JNE OKE",
+                estimasi_pengiriman: pengiriman.results[0].costs[0].cost[0].etd + " hari",
+                biaya: "Rp " + Intl.NumberFormat(["ban", "id"]).format(ongkir)
+            },
             request,
         });
     } catch (error) {
-        console.log(error)
         return res.status(400).json({
             ERR_CODE: "ERROR REQUESTING ITEM",
             message: error.toString(),
