@@ -20,6 +20,7 @@ const verifyRole = (...allowedRoles) =>{
             return res.status(400).json({
                 ERR_CODE:"FORDIBBED ROLE ACCESS",
                 message:"User's role cannot access this request",
+                user_role:req.roles,
                 path:"verifyRole (middleware)"
             })
         }else{

@@ -1,5 +1,5 @@
 const { Op } = require("sequelize")
-const { Farms } = require("../models")
+const { Farms, Tiles } = require("../models")
 const getTimeID = require("../utils/functions/getTimeID")
 const schema = require("../utils/validation")
 const getTime = require("../utils/functions/getTime")
@@ -213,6 +213,114 @@ const unsetBarn =  async (req,res) =>{
     })
 }
 
+
+
+const createTile = async (req,res) => {
+    const permissionType = /all access|owner only|others only/
+    const testPerm = permissionType.test(req.body.permission)
+    if(testPerm){
+        const date = getTimeID()
+        const count = await Tiles.count({
+            where:{
+                tile_id:{
+                    [Op.like]:`%${date}%`
+                }
+            }
+        })+1
+        const newID = `TILE${date}`+(count.toString()).padStart(4,"0")
+        const newTile = await Tiles.create({
+            tile_id:newID,
+            farm_id:req.farm.farm_id,
+            user_id:req.user.user_id,
+            crop_id:req.crop.crop_id,
+            permission:permissionType
+        })
+        return res.status(200).json({
+            STATUS_CODE:"SUCCESSFULLY CREATED A TILE",
+            username:req.user.username,
+            farm:req.farm.farm_name,
+            crop:req.crop.crop_name,
+            permission:permissionType,
+            createdAt:newTile.createdAt
+        })
+    }else{
+        return res.status(400).json({
+            ERR_CODE:"INVALID PERMISSION",
+            message:"Your permission doesn't match in between (all access|owner only|others only)",
+            path:"createTile (controller)"
+        })
+    }
+}
+const updateTile = async (req,res) => {
+    const permissionType = /all access|owner only|others only/
+    const testPerm = permissionType.test(req.body.permission)
+    if(testPerm){
+        const updatedTile = await Tiles.update({
+            permission:permissionType
+        },{
+            where:{
+                tile_id:req.tile.tile_id
+            }
+        })
+        return res.status(200).json({
+            STATUS_CODE:"SUCCESSFULLY UPDATED A TILE",
+            new_permission:permissionType,
+        })
+    }else{  
+        return res.status(400).json({
+            ERR_CODE:"INVALID PERMISSION",
+            message:"Your permission doesn't match in between (all access|owner only|others only)",
+            path:"updateTile (controller)"
+        })
+    }
+}
+
+const deleteTile = async (req,res) => {
+    try{
+        const tileToDelete = req.tile
+        await Tiles.destroy({where:{
+            tile_id:tileToDelete.tile_id
+        }})
+        return res.status(200).json({
+            STATUS_CODE: "SUCCESFULLY DELETED A TILE",
+            username:req.user.username,
+            farm_deleted:tileToDelete
+        })
+    }catch(error){
+        return res.status(400).json({
+            ERR_CODE:"ERROR DELETING TILE",
+            message:error.toString(),
+            path:"deleteTile (controller)"
+        })
+    }
+}
+const restoreTile =async (req,res) => {
+    try{
+        const tileToRestore = req.tile
+        const validRestore = await Tiles.findAll({where:{tile_id:tileToRestore.tile_id}})
+        if(validRestore.length>0){
+            return res.status(400).json({
+                ERR_CODE:"ERROR RESTORING TILE",
+                message:"TILE HAS NOT BEEN DELETED YET!",
+                path:"restoreTile (controller)"
+            })
+        }
+        await Tiles.restore({where:{
+            tile_id:tileToRestore.tile_id
+        }})
+        return res.status(200).json({
+            STATUS_CODE: "SUCCESFULLY RESTORED A TILE",
+            username:req.user.username,
+            farm_restored:tileToRestore
+        })
+    }catch(error){
+        return res.status(400).json({
+            ERR_CODE:"ERROR RESTORING TILE",
+            message:error.toString(),
+            path:"restoreTile (controller)"
+        })
+    }
+}
 module.exports = {
     test,
     createFarm,
@@ -221,5 +329,10 @@ module.exports = {
     deleteFarm,
     restoreFarm,
     setBarn,
-    unsetBarn
+    unsetBarn,
+    createTile,
+    updateTile,
+    deleteTile,
+    restoreTile,
+    
 }
