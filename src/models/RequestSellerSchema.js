@@ -2,7 +2,7 @@
 const mongoose = require("mongoose");
 const reqSellerSchema = mongoose.Schema({
     _id: String,
-    customer_id: String,
+    seller_id: String,
     distributor_id: String,
     item_id: String,
     item_name: String,
