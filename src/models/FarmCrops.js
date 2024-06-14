@@ -1,32 +1,32 @@
 'use strict';
 const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class FarmShops extends Model {
+  class FarmCrops extends Model {
     static associate(models) {}
   }
-  FarmShops.init(
+  FarmCrops.init(
     {
-      farm_shop_id:{
+      farm_crop_id:{
         type:DataTypes.STRING(20),
         primaryKey:true
-      },
-      farm_shop_name:{
-        type:DataTypes.STRING(255),
-        allowNull:false
       },
       farm_id:{
         type:DataTypes.STRING(20),
         allowNull:false
       },
-      user_id:{
+      crop_id:{
         type:DataTypes.STRING(20),
+        allowNull:false
+      },
+      qty:{
+        type:DataTypes.INTEGER,
         allowNull:false
       },
     },
     {
       sequelize,
-      modelName: 'FarmShops',
-      tableName:"farm_shops",
+      modelName: 'FarmCrops',
+      tableName:"farm_crops",
       paranoid:true,
       timestamps:true,
       createdAt:"createdAt",
@@ -34,5 +34,5 @@ module.exports = (sequelize, DataTypes) => {
       deletedAt:"deletedAt"
     }
   );
-  return FarmShops;
+  return FarmCrops;
 };

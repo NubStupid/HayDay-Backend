@@ -173,7 +173,7 @@ const role = async (req, res) => {
     })
 
     if(!role) return res.status(400).send({message: 'Role harus diisi!'})
-    if(role == 'Farmer' || role == 'Chef'){
+    if(role == 'Farmer' || role == 'Chef' || role == 'Seller'){
         await Users.update(
             {role: role, status: 'Pending'},
             {where: {
@@ -217,7 +217,7 @@ const role = async (req, res) => {
         }
     }
     else{
-        res.status(400).send({message: 'Role hanya bisa diisi dengan Distributor/Farmer/Chef'})
+        res.status(400).send({message: 'Role hanya bisa diisi dengan Distributor/Farmer/Chef/Seller'})
     }
 }
 

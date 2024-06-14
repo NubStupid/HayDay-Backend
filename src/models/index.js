@@ -5,27 +5,38 @@
  */
 
 const db = {};
+const dbmongoose = {};
 const { DataTypes } = require("sequelize");
 const conn = require("../databases/connectionHayDay");
 const Barns = require("./Barns");
-const BarnCrops = require("./BarnCrops");
 const City = require("./City");
 const Crops = require("./Crops");
 const Farms = require("./Farms");
-const FarmShops = require("./FarmShops");
-const FarmShopCrops = require("./FarmShopCrops");
+const FarmCrops = require("./FarmCrops");
 const Tiles = require("./Tiles");
 const Users = require("./Users");
+const FnB = require("./FnB");
+const SellerItem = require("./SellerItem");
+
+// Mongoose
+const RequestFarmerSchema= require("./RequestFarmerSchema");
+const RequestSellerSchema= require("./RequestSellerSchema");
 
 // Init Model
 db.Barns = Barns(conn, DataTypes);
-db.BarnCrops = BarnCrops(conn, DataTypes);
 db.City = City(conn, DataTypes);
 db.Crops = Crops(conn, DataTypes);
 db.Farms = Farms(conn, DataTypes);
-db.FarmShops = FarmShops(conn, DataTypes);
-db.FarmShopCrops = FarmShopCrops(conn, DataTypes);
+db.FarmCrops = FarmCrops(conn, DataTypes);
 db.Tiles = Tiles(conn, DataTypes);
 db.Users = Users(conn, DataTypes);
+db.FnB = FnB(conn, DataTypes);
+db.SellerItem = SellerItem(conn, DataTypes);
 
+db.RequestFarmer = RequestFarmerSchema;
+db.RequestSeller = RequestSellerSchema;
+
+// module.exports = {
+    // db
+// };
 module.exports = db;

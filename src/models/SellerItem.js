@@ -1,16 +1,16 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-    class FnB extends Model {
+    class SellerItem extends Model {
         static associate(models) {}
     }
-    FnB.init(
+    SellerItem.init(
         {
-            fnb_id: {
+            item_id: {
                 type: DataTypes.STRING(6),
                 primaryKey: true,
             },
-            fnb_name: {
+            item_name: {
                 type: DataTypes.STRING(100),
                 allowNull: false,
             },
@@ -18,27 +18,19 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING(255),
                 allowNull: false,
             },
-            type: {
-                type: DataTypes.STRING(10),
-                allowNull: false,
-            },
             price: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
-            rating: {
-                type: DataTypes.DOUBLE,
-                allowNull: false,
-            },
-            sold: {
+            qty: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
             },
         },
         {
             sequelize,
-            modelName: "FnB",
-            tableName: "fnb",
+            modelName: "SellerItem",
+            tableName: "seller_items",
             paranoid: true,
             timestamps: true,
             createdAt: "createdAt",
@@ -46,5 +38,5 @@ module.exports = (sequelize, DataTypes) => {
             deletedAt: "deletedAt",
         }
     );
-    return FnB;
+    return SellerItem;
 };

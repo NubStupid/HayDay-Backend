@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 module.exports = {
     hayday_connection: {
         host: process.env.DB_HOST,
@@ -5,6 +7,6 @@ module.exports = {
         password: process.env.DB_PASS,
         port: process.env.DB_PORT,
         database: process.env.DB_DBNAME,
-        dialect: "mysql",
-    },
+        dialect: process.env.DB_DIALECT,
+    }
 };
