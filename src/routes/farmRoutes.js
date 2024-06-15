@@ -26,11 +26,13 @@ router.post("/restore",[middleware.verifyToken,middleware.verifyUser,middleware.
 router.patch("/set",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm("all"),middleware.verifyBarn("all")],setBarn)
 router.patch("/unset",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm("all"),middleware.verifyBarn("all")],unsetBarn)
 
-router.post('/tile/create',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyCrop()],createTile)
-router.get('/tile',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyCrop(),middleware.verifyTile("")],fetchTile)
-router.put('/tile/update',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyCrop(),middleware.verifyTile("")],updateTile)
-router.delete('/tile/delete',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyCrop(),middleware.verifyTile("")],deleteTile)
-router.post('/tile/restore',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyCrop(),middleware.verifyTile("all")],restoreTile)
+router.post('/tile/create',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm()],createTile)
+router.patch('/tile/plant',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm()],)
+router.patch('/tile/harvest',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm()],)
+router.get('/tile',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],fetchTile)
+router.put('/tile/update',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],updateTile)
+router.delete('/tile/delete',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],deleteTile)
+router.post('/tile/restore',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("all")],restoreTile)
 
 
 module.exports = router

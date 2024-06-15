@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     crop_id:{
         type:DataTypes.STRING(20),
-        allowNull:false,
+        allowNull:true,
     },
     permission:{
         type:DataTypes.STRING(255),
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     due_date:{
         type:DataTypes.DATE(),
-        allowNull:false
+        allowNull:true
     }
     },
     {

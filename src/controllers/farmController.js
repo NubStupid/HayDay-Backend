@@ -216,7 +216,7 @@ const unsetBarn =  async (req,res) =>{
 
 
 const createTile = async (req,res) => {
-    const permissionType = /all access|owner only|others only/
+    const permissionType = /all access|owner only/
     const testPerm = permissionType.test(req.body.permission)
     if(testPerm){
         const date = getTimeID()
@@ -232,31 +232,29 @@ const createTile = async (req,res) => {
             tile_id:newID,
             farm_id:req.farm.farm_id,
             user_id:req.user.user_id,
-            crop_id:req.crop.crop_id,
-            permission:permissionType
+            permission:req.body.permission
         })
         return res.status(200).json({
             STATUS_CODE:"SUCCESSFULLY CREATED A TILE",
             username:req.user.username,
             farm:req.farm.farm_name,
-            crop:req.crop.crop_name,
-            permission:permissionType,
+            permission:req.body.permission,
             createdAt:newTile.createdAt
         })
     }else{
         return res.status(400).json({
             ERR_CODE:"INVALID PERMISSION",
-            message:"Your permission doesn't match in between (all access|owner only|others only)",
+            message:"Your permission doesn't match in between (all access|owner only)",
             path:"createTile (controller)"
         })
     }
 }
 const updateTile = async (req,res) => {
-    const permissionType = /all access|owner only|others only/
+    const permissionType = /all access|owner only/
     const testPerm = permissionType.test(req.body.permission)
     if(testPerm){
         const updatedTile = await Tiles.update({
-            permission:permissionType
+            permission:req.body.permission
         },{
             where:{
                 tile_id:req.tile.tile_id
@@ -264,12 +262,12 @@ const updateTile = async (req,res) => {
         })
         return res.status(200).json({
             STATUS_CODE:"SUCCESSFULLY UPDATED A TILE",
-            new_permission:permissionType,
+            new_permission:req.body.permission,
         })
     }else{  
         return res.status(400).json({
             ERR_CODE:"INVALID PERMISSION",
-            message:"Your permission doesn't match in between (all access|owner only|others only)",
+            message:"Your permission doesn't match in between (all access|owner only)",
             path:"updateTile (controller)"
         })
     }
@@ -284,7 +282,7 @@ const deleteTile = async (req,res) => {
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY DELETED A TILE",
             username:req.user.username,
-            farm_deleted:tileToDelete
+            tile_deleted:tileToDelete
         })
     }catch(error){
         return res.status(400).json({
@@ -311,7 +309,7 @@ const restoreTile =async (req,res) => {
         return res.status(200).json({
             STATUS_CODE: "SUCCESFULLY RESTORED A TILE",
             username:req.user.username,
-            farm_restored:tileToRestore
+            tile_restored:tileToRestore
         })
     }catch(error){
         return res.status(400).json({
@@ -324,35 +322,43 @@ const restoreTile =async (req,res) => {
 
 const fetchTile = async(req,res) =>{
     const user = req.user
-    let allTiles = await Tiles.findAll({where:{
-        user_id: user.user_id,
-    },
-    attributes:["tile_id","farm_id","user_id","crop_id","createdAt","updatedAt"]
-    })
+    allTiles = req.tile
     let allTilesFormatted = []
+    if(Array.isArray(allTiles))
     allTiles.map((f)=>{
         allTilesFormatted.push({
             tile_id:f.tile_id,
-            farm_id:f.farm_id,
-            user_id:f.user_id,
-            crop_id: f.crop_id,
+            planted: f.crop_id?"Planted":"Empty",
             createdAt: getTime(f.createdAt),
             lastUpdated: getTime(f.updatedAt),
         })
     })
+    else{
+        allTilesFormatted = {
+            tile_id:req.tile.tile_id,
+            planted: req.tile.crop_id?"Planted":"Empty",
+            createdAt: getTime(req.tile.createdAt),
+            lastUpdated: getTime(req.tile.updatedAt),
+        }
+    }
+    let queryFilter = "TILE "+req.body.tile_id
+    if(req.body.tile_id == "all"){
+        queryFilter = "ALL TILES"
+    }
     return res.status(200).json({
-        STATUS_CODE: "SUCCESSFULLY FETCH ALL "+user.username+"'s Farms",
-        farms:allFarmsFormatted,
+        STATUS_CODE: "SUCCESSFULLY FETCH "+queryFilter,
+        tile:allTilesFormatted,
     })
 }
 
 const farmAllTiles = async (req,res) =>{
     const allTiles = await Tiles.findAll()
     let allTilesFormatted = []
-    allTilesFormatted.map((t) => {
+    allTiles.map((t) => {
         due_day = t.due_date.getDay()
         due_month = t.due_date.getMonth()+1
         due_year = t.due_date.getFullYear()
+
     })
 }
 
