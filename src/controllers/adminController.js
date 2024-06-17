@@ -185,10 +185,57 @@ const fetchCropImage = async(req,res) => {
 
 
 const getUsers = async (req, res) => {
-    let users = await Users.findAll({
-        attributes: ['user_id', 'username', 'display_name', 'email', 'phone_number', 'balance', 'role', 'status']
-    })
-    res.status(200).send(users)
+    const { name, status } = req.query
+    
+    if (name && status){
+        if(status.toLowerCase() == 'approved' || status.toLowerCase() == 'pending'){
+            let users = await Users.findAll({
+                attributes: ['user_id', 'username', 'display_name', 'email', 'phone_number', 'balance', 'role', 'status'],
+                where: {
+                    [Op.like]: `%${name}%`,
+                    status: status
+                }
+            })
+            res.status(200).send(users)
+        }
+        else{
+            res.status(400).send({message: 'Status hanya bisa diisi dengan approved atau pending'})
+        }
+    }
+    else if (name && !status){
+        let users = await Users.findAll({
+            attributes: ['user_id', 'username', 'display_name', 'email', 'phone_number', 'balance', 'role', 'status'],
+            where: {
+                [Op.like]: `%${name}%`
+            }
+        })
+        res.status(200).send(users)
+    }
+    else if (!name && status){
+        if(status.toLowerCase() == 'approved' || status.toLowerCase() == 'pending'){
+            let users = await Users.findAll({
+                attributes: ['user_id', 'username', 'display_name', 'email', 'phone_number', 'balance', 'role', 'status'],
+                where: {
+                    status: status
+                }
+            })
+            if(users.length > 0){
+                res.status(200).send(users)
+            }
+            else{
+                res.status(404).send({message: 'Tidak ada data'})
+            }
+        }
+        else{
+            res.status(400).send({message: 'Status hanya bisa diisi dengan approved atau pending'})
+        }
+    }
+    else{
+        let users = await Users.findAll({
+            attributes: ['user_id', 'username', 'display_name', 'email', 'phone_number', 'balance', 'role', 'status']
+        })
+        res.status(200).send(users)
+    }
 }
 
 const setRole = async (req, res) => {
