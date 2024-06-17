@@ -212,7 +212,7 @@ const role = async (req, res) => {
             });
             res.status(404).send({
                 message: 'Kota tidak ditemukan',
-                rekomendasi: all
+                rekomendasi: all.length > 0 ? all : '-'
             })
         }
     }
