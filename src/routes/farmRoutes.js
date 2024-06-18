@@ -18,6 +18,7 @@ const {
      farmTile,
      removeFarmCrops,
     } = require('../controllers/farmController');
+const { finishRequestFarmer, getAllRequestFarmer } = require('../controllers/distributorController');
 const middleware = require('../middlewares');
 const verifyFarmOwner = require('../middlewares/verifyFarmOwner');
 const router = express.Router()
@@ -33,11 +34,15 @@ router.patch("/unset",[middleware.verifyToken,middleware.verifyUser, middleware.
 
 router.post('/tile/create',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm()],createTile)
 router.patch('/tile/plant',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile(),middleware.verifyCrop()],plantCrops)
-router.patch('/tile/harvest',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm()],farmTile)
-router.patch('/tile/harvest/all',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm()],farmAllTiles)
-router.get('/tile',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],fetchTile)
-router.put('/tile/update',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],updateTile)
-router.delete('/tile/delete',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],deleteTile)
-router.post('/tile/restore',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("all")],restoreTile)
+
+router.patch('/tile/harvest',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm()],farmTile)
+router.patch('/tile/harvest/all',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm()],farmAllTiles)
+router.get('/tile',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],fetchTile)
+router.put('/tile/update',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],updateTile)
+router.delete('/tile/delete',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],deleteTile)
+router.post('/tile/restore',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("all")],restoreTile)
+
+router.post("/finishfarmer",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer")],finishRequestFarmer)
+router.get("/requestfarmer",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer")],getAllRequestFarmer)
 
 module.exports = router

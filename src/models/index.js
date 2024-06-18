@@ -5,7 +5,6 @@
  */
 
 const db = {};
-const dbmongoose = {};
 const { DataTypes } = require("sequelize");
 const conn = require("../databases/connectionHayDay");
 const Barns = require("./Barns");
@@ -16,6 +15,7 @@ const FarmCrops = require("./FarmCrops");
 const Tiles = require("./Tiles");
 const Users = require("./Users");
 const FnB = require("./FnB");
+const DistributorItem = require("./Distributoritem");
 const SellerItem = require("./SellerItem");
 
 // Mongoose
@@ -32,11 +32,9 @@ db.Tiles = Tiles(conn, DataTypes);
 db.Users = Users(conn, DataTypes);
 db.FnB = FnB(conn, DataTypes);
 db.SellerItem = SellerItem(conn, DataTypes);
+db.DistributorItem = DistributorItem(conn, DataTypes);
 
 db.RequestFarmer = RequestFarmerSchema;
 db.RequestSeller = RequestSellerSchema;
 
-// module.exports = {
-    // db
-// };
 module.exports = db;
