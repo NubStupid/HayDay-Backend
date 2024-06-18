@@ -26,7 +26,7 @@ const verifyUser = async (req, res, next) => {
     else if (user.role == "Chef") req.roles = "Chef";
     else if (user.role == "Seller") req.roles = "Seller";
     else if (user.role == "Admin") req.roles = "Admin";
-    else if(user.role == null) req.roles = 'None';
+    else if(user.role == '-') req.roles = 'None';
     else req.roles = user.role
     req.user = {
         user_id: user.user_id,

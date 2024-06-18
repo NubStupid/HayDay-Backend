@@ -3,6 +3,6 @@ const middleware = require('../middlewares');
 const { getListItem } = require('../controllers/distributorController');
 const router = express.Router();
 
-router.get("/item",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Distributor")],getListItem)
+router.get("/item",[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Distributor")],getListItem)
 
 module.exports = router;
