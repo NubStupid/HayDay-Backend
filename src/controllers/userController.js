@@ -235,7 +235,7 @@ const upgrade = async (req, res) => {
         if(user.type.toLowerCase() == 'premium') return res.status(400).send({message: 'Akun anda sudah premium!'})
         let saldo = parseInt(user.balance) - 200000
         let update = await Users.update({
-            type: 'Premium', saldo: saldo
+            type: 'Premium', balance: saldo
         },
         {
             where : {
