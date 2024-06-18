@@ -222,9 +222,41 @@ const role = async (req, res) => {
     }
 }
 
+const upgrade = async (req, res) => {
+    const {user_id} = req.user
+
+    let user = await Users.findOne({
+        where : {
+            user_id : user_id
+        }
+    })
+
+    if(user.balance >= 200000){
+        if(user.type.toLowerCase() == 'premium') return res.status(400).send({message: 'Akun anda sudah premium!'})
+        let saldo = parseInt(user.balance) - 200000
+        let update = await Users.update({
+            type: 'Premium', saldo: saldo
+        },
+        {
+            where : {
+                username: user.username
+            }
+        }
+        )
+        res.status(200).send({
+            message: 'Selamat akun anda menjadi premium',
+            sisa_saldo: saldo
+        })
+    }
+    else{
+        res.status(400).send({message: 'Saldo anda tidak cukup! Silahkan lakukan topup dahulu'})
+    }
+}
+
 module.exports = {
     register,
     login,
     topup,
-    role
+    role,
+    upgrade
 };

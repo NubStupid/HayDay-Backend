@@ -14,4 +14,6 @@ middleware.verifyFnB = require("./verifyFnB")
 middleware.verifySellerItem = require("./verifySellerItem")
 middleware.verifyRequestSeller = require("./verifyRequestSeller")
 middleware.verifyTile = require('./verifyTile')
+middleware.verifyAPI = require("./verifyAPI")
+
 module.exports = middleware
