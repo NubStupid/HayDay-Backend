@@ -3,6 +3,7 @@ const { Farms, Tiles } = require("../models")
 const getTimeID = require("../utils/functions/getTimeID")
 const schema = require("../utils/validation")
 const getTime = require("../utils/functions/getTime")
+const getDay = require("../utils/functions/getDay")
 
 const test = (req,res) => {
     return res.status(200).json({
@@ -350,7 +351,30 @@ const fetchTile = async(req,res) =>{
         tile:allTilesFormatted,
     })
 }
+const plantCrops = async (req,res) => {
+    if(req.tile.crop_id != null){
+        return res.status(400).json({
+            message:"Tile has already been planted!"
+        })
+    }
+    const today = new Date()
+    const toPrint = today.setDate(today.getDate()+req.crop.harvest_time)
+    const updatedTile = await Tiles.update({
+        crop_id: req.crop.crop_id,
+        due_date:toPrint
+    },{
+        where:{
+            tile_id:req.tile.tile_id}
+    })
+    return res.json({
+        message:"Sucessfully planted "+req.crop.crop_name+" in tile "+req.tile.tile_id,
+        due_date : getDay(toPrint)
+    })
+}
 
+const farmTile = async (req,res) => {
+
+}
 const farmAllTiles = async (req,res) =>{
     const allTiles = await Tiles.findAll()
     let allTilesFormatted = []
@@ -377,5 +401,7 @@ module.exports = {
     restoreTile,
     fetchTile,
     farmAllTiles,
+    plantCrops,
+    farmTile,
 
 }
