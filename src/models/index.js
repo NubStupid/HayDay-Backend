@@ -15,7 +15,7 @@ const FarmCrops = require("./FarmCrops");
 const Tiles = require("./Tiles");
 const Users = require("./Users");
 const FnB = require("./FnB");
-const DistributorItem = require("./Distributoritem");
+const DistributorItem = require("./DistributorItem");
 const SellerItem = require("./SellerItem");
 
 // Mongoose
