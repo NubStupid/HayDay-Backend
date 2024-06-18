@@ -17,6 +17,7 @@ const {
      farmAllTiles,
      farmTile,
     } = require('../controllers/farmController');
+const { finishRequestFarmer, getAllRequestFarmer } = require('../controllers/distributorController');
 const middleware = require('../middlewares');
 const router = express.Router()
 
@@ -38,5 +39,7 @@ router.put('/tile/update',[middleware.verifyToken,middleware.verifyUser,middlewa
 router.delete('/tile/delete',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],deleteTile)
 router.post('/tile/restore',[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("all")],restoreTile)
 
+router.post("/finishfarmer",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer")],finishRequestFarmer)
+router.get("/requestfarmer",[middleware.verifyToken,middleware.verifyUser,middleware.verifyRole("Farmer")],getAllRequestFarmer)
 
 module.exports = router
