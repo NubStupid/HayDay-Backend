@@ -40,5 +40,4 @@ router.put('/tile/update',[middleware.verifyToken,middleware.verifyUser, middlew
 router.delete('/tile/delete',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],deleteTile)
 router.post('/tile/restore',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("all")],restoreTile)
 
-
 module.exports = router
