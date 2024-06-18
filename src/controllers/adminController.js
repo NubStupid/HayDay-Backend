@@ -192,7 +192,7 @@ const getUsers = async (req, res) => {
             let users = await Users.findAll({
                 attributes: ['user_id', 'username', 'display_name', 'email', 'phone_number', 'balance', 'role', 'status'],
                 where: {
-                    [Op.like]: `%${name}%`,
+                    display_name : {[Op.like]: `%${name}%`},
                     status: status
                 }
             })
@@ -206,7 +206,7 @@ const getUsers = async (req, res) => {
         let users = await Users.findAll({
             attributes: ['user_id', 'username', 'display_name', 'email', 'phone_number', 'balance', 'role', 'status'],
             where: {
-                [Op.like]: `%${name}%`
+                display_name : {[Op.like]: `%${name}%`},
             }
         })
         res.status(200).send(users)

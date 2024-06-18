@@ -45,9 +45,6 @@ module.exports = (sequelize, DataTypes) => {
             access_token: {
                 type: DataTypes.STRING(255),
             },
-            refresh_token: {
-                type: DataTypes.STRING(255),
-            },
         },
         {
             sequelize,
