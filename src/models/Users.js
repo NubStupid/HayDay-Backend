@@ -42,6 +42,12 @@ module.exports = (sequelize, DataTypes) => {
             status: {
                 type: DataTypes.STRING(10),
             },
+            api_hit: {
+                type: DataTypes.INTEGER,
+            },
+            type: {
+                type: DataTypes.STRING(10),
+            },
             access_token: {
                 type: DataTypes.STRING(255),
             },
