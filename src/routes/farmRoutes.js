@@ -16,8 +16,10 @@ const {
      plantCrops,
      farmAllTiles,
      farmTile,
+     removeFarmCrops,
     } = require('../controllers/farmController');
 const middleware = require('../middlewares');
+const verifyFarmOwner = require('../middlewares/verifyFarmOwner');
 const router = express.Router()
 
 router.get("/test",[middleware.verifyToken,middleware.verifyUser,middleware.verifyAPI,middleware.verifyRole("Farmer")],test)
@@ -37,6 +39,5 @@ router.get('/tile',[middleware.verifyToken,middleware.verifyUser, middleware.ver
 router.put('/tile/update',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],updateTile)
 router.delete('/tile/delete',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("")],deleteTile)
 router.post('/tile/restore',[middleware.verifyToken,middleware.verifyUser, middleware.verifyAPI,middleware.verifyRole("Farmer"),middleware.verifyFarm(),middleware.verifyTile("all")],restoreTile)
-
 
 module.exports = router
