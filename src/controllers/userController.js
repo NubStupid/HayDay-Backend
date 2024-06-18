@@ -4,7 +4,8 @@ const { Op } = require("sequelize");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const getTimeID = require("../utils/functions/getTimeID");
-const JWT_KEY = "HAYDAY";
+require("dotenv").config();
+const JWT_KEY = process.env.ACCESS_TOKEN_SECRET;
 const register = async (req, res) => {
     const { username, password, confirm_password, display_name, email, phone_number } = req.body;
     const schema = Joi.object({

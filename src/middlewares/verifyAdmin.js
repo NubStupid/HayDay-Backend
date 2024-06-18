@@ -1,4 +1,5 @@
-const JWT_KEY = "HAYDAY";
+require("dotenv").config();
+const JWT_KEY = process.env.ACCESS_TOKEN_SECRET;
 const { Users } = require("../models");
 const jwt = require("jsonwebtoken");
 
