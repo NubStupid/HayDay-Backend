@@ -16,8 +16,10 @@ const {
      plantCrops,
      farmAllTiles,
      farmTile,
+     removeFarmCrops,
     } = require('../controllers/farmController');
 const middleware = require('../middlewares');
+const verifyFarmOwner = require('../middlewares/verifyFarmOwner');
 const router = express.Router()
 
 router.get("/test",[middleware.verifyToken,middleware.verifyUser,middleware.verifyAPI,middleware.verifyRole("Farmer")],test)
